@@ -9,12 +9,12 @@ namespace ChatGPTApi.Controllers
     public class PreventifyController : Controller
     {
 
-        private readonly ILogger<ChatGPTTestResponseController> _logger;
+        private readonly ILogger<PreventifyController> _logger;
         private ApiKeyModel? apiKeyRetriever;
         private HttpRequestMessageModel? requestMessage;
         private HttpResponseMessageModel? responseMessage;
 
-        public PreventifyController(ILogger<ChatGPTTestResponseController> logger)
+        public PreventifyController(ILogger<PreventifyController> logger)
         {
             _logger = logger;
         }
@@ -24,8 +24,8 @@ namespace ChatGPTApi.Controllers
         /// </summary>
         /// <param name="prompt"></param>
         /// <returns></returns>
-        [HttpGet(Name = "GetChatGPTDiseaseResponse")]
-        public async Task<string?> GetAsync(int age, bool hasChildren, string typeOfWork, string description)
+        [HttpGet(Name = "GetPreventifyContext")]
+        public async Task<string?> GetAsync(int age, bool hasChildren, string typeOfWork, string description, string gender)
         {
             apiKeyRetriever = new ApiKeyModel { LocationPath = "apikey.txt" };
             requestMessage = new HttpRequestMessageModel
@@ -34,7 +34,7 @@ namespace ChatGPTApi.Controllers
             };
 
             using HttpClient httpClient = new();
-            using HttpResponseMessage? httpResponse = await httpClient.SendAsync(requestMessage.GetHttpRequestMessage(age, hasChildren, typeOfWork, description));
+            using HttpResponseMessage? httpResponse = await httpClient.SendAsync(requestMessage.GetHttpRequestMessage(age, hasChildren, typeOfWork, description, gender));
             responseMessage = new HttpResponseMessageModel { HttpResponseMessage = httpResponse };
 
             return await responseMessage.GetCompletionResponseAsync();
